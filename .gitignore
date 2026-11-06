@@ -1,0 +1,18 @@
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Maven
+target/
+
+# IDE / OS
+.DS_Store
+*.iml
+.idea/
+.classpath
+.project
+.settings/

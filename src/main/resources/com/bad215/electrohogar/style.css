@@ -1,0 +1,57 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 3 nov 2026, 6:49:13 p.m.
+    Author     : Carlos
+*/
+
+.root-pane {
+    -fx-background-color: #f4f6f9;
+}
+
+.login-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.login-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.login-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.input-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+.text-field, .password-field {
+    -fx-background-radius: 4;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 4;
+}
+
+.login-button {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+}
+
+.login-button:hover {
+    -fx-background-color: #2471a3;
+}
+
+.forgot-link {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7f8c8d;
+}

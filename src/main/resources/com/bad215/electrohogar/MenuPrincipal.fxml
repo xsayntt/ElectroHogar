@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.bad215.electrohogar.controller.MenuPrincipalController"
+            stylesheets="@styles.css" prefWidth="1100" prefHeight="700">
+    <left>
+        <ScrollPane fitToWidth="true" prefWidth="240" hbarPolicy="NEVER">
+            <VBox fx:id="menuContainer" spacing="6">
+                <padding>
+                    <javafx.geometry.Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </VBox>
+        </ScrollPane>
+    </left>
+    <center>
+        <StackPane fx:id="contentPane"/>
+    </center>
+<top>
+    <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="barra-superior">
+        <padding>
+            <Insets top="8" right="15" bottom="8" left="15"/>
+        </padding>
+        <Label fx:id="lblUsuario" styleClass="lbl-barra"/>
+        <Label fx:id="lblHora" styleClass="lbl-barra"/>
+    </HBox>
+</top>
+</BorderPane>
