@@ -16,3 +16,6 @@ target/
 .classpath
 .project
 .settings/
+
+# Ignorar archivo de conexion local
+/src/main/java/com/bad215/electrohogar/utils/Conexion.java

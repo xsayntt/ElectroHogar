@@ -6,42 +6,49 @@ package com.bad215.electrohogar.model;
 
 /**
  *
- * @author Carlos
+ * @author Admin
  */
-public enum Turno {
-    MATUTINO(1, "Lunes a Viernes", "08:00 AM - 04:00 PM"),
-    VESPERTINO(2, "Lunes a Viernes", "01:00 PM - 09:00 PM");
-
-    private final int idTurno;
-    private final String dias;
-    private final String horario;
-
-    Turno(int idTurno, String dias, String horario) {
-        this.idTurno = idTurno;
-        this.dias = dias;
-        this.horario = horario;
-    }
+public class Turno {
+    
+    private int idTurno;
+    private String tipoTurno;
+    private String dias;
+    private String horario;
 
     public int getIdTurno() {
         return idTurno;
+    }
+
+    public void setIdTurno(int idTurno) {
+        this.idTurno = idTurno;
+    }
+
+    public String getTipoTurno() {
+        return tipoTurno;
+    }
+
+    public void setTipoTurno(String tipoTurno) {
+        this.tipoTurno = tipoTurno;
     }
 
     public String getDias() {
         return dias;
     }
 
+    public void setDias(String dias) {
+        this.dias = dias;
+    }
+
     public String getHorario() {
         return horario;
     }
-    
-    public static Turno fromId(int id) {
-    for (Turno turno : Turno.values()) {
-        if (turno.getIdTurno() == id) {
-            return turno;
-        }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
     }
 
-    throw new IllegalArgumentException("ID de turno no válido: " + id);
-}
-
+    @Override
+    public String toString() {
+        return tipoTurno + " " + dias + " " + horario;
+    }
 }

@@ -56,6 +56,11 @@ public class Sucursal {
     public void setLimiteCreditoPersonal(BigDecimal limiteCreditoPersonal) {
         this.limiteCreditoPersonal = limiteCreditoPersonal;
     }
+
+    @Override
+    public String toString() {
+        return  nombreSucursal ;
+    }
     
     
     
