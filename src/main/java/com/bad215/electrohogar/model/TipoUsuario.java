@@ -8,39 +8,28 @@ package com.bad215.electrohogar.model;
  *
  * @author Carlos
  */
-public class TipoUsuario {
-    
-    private int idTipo;
-    private String nombreTipo;
-    private int cantUsuarios;
+public enum TipoUsuario {
+    Administrador(1),
+    Cajero(2),
+    Vendedor(3);
 
-    public int getIdTipo() {
-        return idTipo;
+private final int id;
+
+    TipoUsuario(int id) {
+        this.id = id;
     }
 
-    public void setIdTipo(int idTipo) {
-        this.idTipo = idTipo;
+    public int getId() {
+        return id;
     }
 
-    public String getNombreTipo() {
-        return nombreTipo;
-    }
-
-    public void setNombreTipo(String nombreTipo) {
-        this.nombreTipo = nombreTipo;
-    }
-
-    public int getCantUsuarios() {
-        return cantUsuarios;
-    }
-
-    public void setCantUsuarios(int cantUsuarios) {
-        this.cantUsuarios = cantUsuarios;
-    }
-
-    @Override
-    public String toString() {
-        return nombreTipo;
+    public static TipoUsuario desdeId(int id) {
+        for (TipoUsuario t : values()) {
+            if (t.id == id) {
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("Tipo de usuario desconocido: " + id);
     }
 }
 
