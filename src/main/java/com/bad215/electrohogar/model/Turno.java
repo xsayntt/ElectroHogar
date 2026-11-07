@@ -49,7 +49,7 @@ public class Turno {
 
     @Override
     public String toString() {
-        return "Turno{" + "tipoTurno=" + tipoTurno + ", dias=" + dias + ", horario=" + horario + '}';
+        return tipoTurno + " " + dias + " " + horario;
     }
     
     

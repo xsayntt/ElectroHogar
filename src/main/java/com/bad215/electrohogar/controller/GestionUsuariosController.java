@@ -105,16 +105,17 @@ public class GestionUsuariosController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Catalogos.cargarSucursales(cmbSucursal);
         Catalogos.cargarRoles(cmbRol);
         Catalogos.cargarSucursales(cmbSucursal);
         Catalogos.cargarTurnos(cmbTurno);
         Catalogos.cargarSupervisores(cmbSupervisor, null); 
+        
         cmbSubtipo.getItems().setAll("Ninguno", "Vendedor", "Cajero");
         cmbSubtipo.getSelectionModel().selectFirst();
-        
-        Catalogos.cargarSucursales(cmbSucursal);
         cmbSubtipo.valueProperty().addListener((obs, ant, nuevo) -> actualizarSubtipo(nuevo));
         actualizarSubtipo("Ninguno");
+        cmbRol.valueProperty().addListener((obs, ant, rol) -> cmbSubtipo.setValue(subtipoPorRol(rol)));
         
         colEmpleado.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEmpleado()));
         colUsuario.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNombreUsuario()));
@@ -371,6 +372,20 @@ public class GestionUsuariosController implements Initializable {
         c.setNumeroCaja(Formulario.aEntero(txtNumeroCaja));
         return c;
     }
+    
+    private String subtipoPorRol(TipoUsuario rol) {
+    if (rol == null) {
+        return NINGUNO;
+    }
+    String nombre = rol.getNombreTipo();
+    if (VENDEDOR.equalsIgnoreCase(nombre)) {
+        return VENDEDOR;
+    }
+    if (CAJERO.equalsIgnoreCase(nombre)) {
+        return CAJERO;
+    }
+    return NINGUNO;
+}
     
 
         // ---------- Validación ----------
