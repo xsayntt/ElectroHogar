@@ -8,6 +8,7 @@ import com.bad215.electrohogar.model.Cajero;
 import com.bad215.electrohogar.model.Empleado;
 import com.bad215.electrohogar.model.TipoUsuario;
 import com.bad215.electrohogar.model.Usuario;
+import com.bad215.electrohogar.model.UsuarioResumen;
 import com.bad215.electrohogar.model.Vendedor;
 import com.bad215.electrohogar.utils.Conexion;
 import com.bad215.electrohogar.utils.Contrasena;
@@ -17,6 +18,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -156,6 +159,73 @@ public class UsuarioDao {
             if (vendedor != null) vendedor.setIdEmpleado(idEmpleado);
             if (cajero != null) cajero.setIdEmpleado(idEmpleado);
         }
+    }
+    
+    public void reactivar(int idSuperior, int idUsuario) throws SQLException {
+        String sql = "{CALL sp_reactivar(?, ?)}";
+ 
+        try (Connection con = Conexion.getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+ 
+            cs.setInt(1, idSuperior);
+            cs.setInt(2, idUsuario);
+            cs.execute();
+        }
+    }
+    
+    public void desbloquear(int idSuperior, int idUsuario) throws SQLException {
+        String sql = "{CALL sp_desbloquear(?, ?)}";
+ 
+        try (Connection con = Conexion.getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+ 
+            cs.setInt(1, idSuperior);
+            cs.setInt(2, idUsuario);
+            cs.execute();
+        }
+    }
+    
+        public void darDeBaja(int idSuperior, int idUsuario) throws SQLException {
+        String sql = "{CALL sp_dar_de_baja(?, ?)}";
+ 
+        try (Connection con = Conexion.getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+ 
+            cs.setInt(1, idSuperior);
+            cs.setInt(2, idUsuario);
+            cs.execute();
+        }
+    }
+        
+        public List<UsuarioResumen> buscar(int idSuperior, String texto) throws SQLException {
+        String sql = "{CALL sp_buscar_usuario(?, ?)}";
+        List<UsuarioResumen> lista = new ArrayList<>();
+ 
+        try (Connection con = Conexion.getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+ 
+            cs.setInt(1, idSuperior);
+            cs.setString(2, texto);
+ 
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    UsuarioResumen u = new UsuarioResumen();
+                    u.setIdUsuario(rs.getInt("ID_USUARIO"));
+                    u.setNombreUsuario(rs.getString("NOMBRE_USUARIO"));
+                    u.setRol(rs.getString("ROL"));
+                    u.setEstadoUsuario(rs.getBoolean("ESTADO_USUARIO"));
+                    u.setBloqueado(rs.getBoolean("BLOQUEADO"));
+                    u.setIntentosFallidos(rs.getInt("INTENTOS_FALLIDOS"));
+                    // LEFT JOIN: el usuario puede no tener empleado asociado
+                    u.setIdEmpleado(rs.getObject("ID_EMPLEADO", Integer.class));
+                    u.setEmpleado(rs.getString("EMPLEADO"));
+                    u.setDuiEmpleado(rs.getString("DUI_EMPLEADO"));
+                    u.setEmailEmpleado(rs.getString("EMAIL_EMPLEADO"));
+                    lista.add(u);
+                }
+            }
+        }
+        return lista;
     }
 }
 
