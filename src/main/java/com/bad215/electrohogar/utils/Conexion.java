@@ -11,9 +11,9 @@ import java.sql.SQLException;
  * @author Carlos
  */
 public class Conexion {
-    private static final String URL = "jdbc:mysql://localhost:3307/electrohogar";
+    private static final String URL = "jdbc:mysql://localhost:3306/electrohogar";
     private static final String USER = "root";
-    private static final String PASS = "tiger";
+    private static final String PASS = "^3p]hdoF79aa";
 
     public static Connection getConexion() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
