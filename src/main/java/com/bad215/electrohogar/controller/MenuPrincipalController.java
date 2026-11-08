@@ -39,7 +39,8 @@ import javafx.scene.layout.VBox;
 public class MenuPrincipalController implements Initializable {
     
      private static final String RUTA_VISTAS = "/com/bad215/electrohogar/";
-    private static final int SIN_PADRE = 0;   // MEN_ID_MENU NULL en BD llega como 0
+     private static final String RUTA_INTERNA_VENTA = "FrmVenta";
+     private static final int SIN_PADRE = 0;   // MEN_ID_MENU NULL en BD llega como 0
 
     @FXML private VBox menuContainer;
     @FXML private StackPane contentPane;
@@ -79,6 +80,11 @@ public class MenuPrincipalController implements Initializable {
                 .collect(Collectors.groupingBy(MenuRuta::getMenIdMenu));
 
         for (MenuRuta raiz : hijosPorPadre.getOrDefault(SIN_PADRE, Collections.emptyList())) {
+            // FrmVenta es un permiso interno requerido por los procedimientos de venta,
+            // pero la vista que debe abrir el usuario es FrmFacturasDetalle.
+            if (RUTA_INTERNA_VENTA.equals(raiz.getRuta())) {
+                continue;
+            }
             List<MenuRuta> hijos = hijosPorPadre.getOrDefault(raiz.getIdMenu(), Collections.emptyList())
                     .stream()
                     .filter(h -> h.getPrivilegio().isPuedeLeer())
