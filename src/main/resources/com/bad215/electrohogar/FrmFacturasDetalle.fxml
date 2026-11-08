@@ -40,15 +40,15 @@
                             </columnConstraints>
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                         <Label style="-fx-font-size: 12px;" text="Buscar cliente" />
-                        <TextField fx:id="txtBuscarCliente" onAction="#buscarCliente" prefHeight="36.0" promptText="Nombre" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
+                        <TextField fx:id="txtBuscarCliente" onAction="#buscarCliente" prefHeight="36.0" promptText="Nombre o ID" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
                     </VBox>
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                         <Label style="-fx-font-size: 12px;" text="Cliente" />
-                        <ComboBox fx:id="cmbCliente" maxWidth="Infinity" onAction="#clienteSeleccionado" prefHeight="36.0" promptText="Seleccionar un cliente" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc;" />
+                        <ComboBox fx:id="cmbCliente" maxWidth="Infinity" prefHeight="36.0" promptText="Selecciona un cliente" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc;" />
                     </VBox>
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                         <Label style="-fx-font-size: 12px;" text="Método de pago" />
-                        <ComboBox fx:id="cmbMetodoPago" maxWidth="Infinity" onAction="#metodoPagoSeleccionado" prefHeight="36.0" promptText="Seleccionar un método" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc;" />
+                        <ComboBox fx:id="cmbMetodoPago" maxWidth="Infinity" onAction="#metodoPagoSeleccionado" prefHeight="36.0" promptText="Selecciona un método" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc;" />
                     </VBox>
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <Label style="-fx-font-size: 12px;" text="Cantidad de cuotas" />
@@ -142,7 +142,7 @@
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                         </columnResizePolicy>
                         <placeholder>
-                            <Label text="Aún no hay productos agregados" />
+                            <Label text="Aún no se han agregado productos." />
                         </placeholder>
                     </TableView>
                     <HBox alignment="CENTER_RIGHT">
