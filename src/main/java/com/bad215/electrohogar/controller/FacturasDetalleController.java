@@ -242,7 +242,7 @@ public class FacturasDetalleController implements Initializable {
             int numeroFactura = facturaDao.registrarVenta(Sesion.getIdUsuario(), cliente.getIdCliente(),
                     metodo.getIdMetodo(), cuotas, new ArrayList<>(lineas));
             Alertas.info("Factura creada", "Factura N° " + numeroFactura + " registrada correctamente.");
-            FacturasController.abrirEnContenido(btnProcederPago, "FrmFacturas");
+            FacturasController.abrirEnContenido(btnProcederPago, "FrmVenta");
         } catch (SQLException e) {
             mostrarError("Factura", "No se pudo registrar la factura.", e);
         }
@@ -254,7 +254,7 @@ public class FacturasDetalleController implements Initializable {
                 "Se perderán los productos agregados ¿continuar?")) {
             return;
         }
-        FacturasController.abrirEnContenido(btnCancelar, "FrmFacturas");
+        FacturasController.abrirEnContenido(btnCancelar, "FrmVenta");
     }
 
     private LineaVenta buscarLinea(int idProducto) {
