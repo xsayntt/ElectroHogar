@@ -1,5 +1,6 @@
 package com.bad215.electrohogar.controller;
 
+import com.bad215.electrohogar.dao.CuotaDao;
 import com.bad215.electrohogar.model.Cuota;
 import com.bad215.electrohogar.utils.Alertas;
 import com.bad215.electrohogar.utils.Conexion;
@@ -10,11 +11,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.*;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 /**
  *
  * @author Rene
  */
 public class CreditosController {
+    
     @FXML private TextField txtClienteId;
     @FXML private TextField txtNumeroFactura;
     @FXML private TextField txtDui;
@@ -35,8 +41,9 @@ public class CreditosController {
     @FXML private ComboBox<String> cmbMetodoPago;
     @FXML private Button btnPagar;
 
-    private int idUsuarioLogueado;
+    private final CuotaDao cuotaDAO = new CuotaDao();
     private final ObservableList<Cuota> listaCuotas = FXCollections.observableArrayList();
+    private int idUsuarioLogueado;
 
     public void initData(int idUsuario) {
         this.idUsuarioLogueado = idUsuario;
@@ -45,9 +52,9 @@ public class CreditosController {
     @FXML
     public void initialize() {
         this.idUsuarioLogueado = Sesion.getIdUsuario();
-    
+
         configurarTabla();
-        
+
         cmbEstado.setItems(FXCollections.observableArrayList("Todos", "Pendiente", "Pagada", "Vencida"));
         cmbEstado.getSelectionModel().select("Todos");
 
@@ -55,21 +62,20 @@ public class CreditosController {
         cmbMetodoPago.getSelectionModel().selectFirst();
 
         btnPagar.setDisable(true);
-        tblCuotas.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
-            btnPagar.setDisable(newSel == null || "Pagada".equalsIgnoreCase(newSel.getEstadoCalculado()));
-        });
+        tblCuotas.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) ->
+                btnPagar.setDisable(newSel == null || "Pagada".equalsIgnoreCase(newSel.getEstadoCalculado())));
     }
 
     private void configurarTabla() {
-        colFactura.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getNumeroFactura()).asObject());
-        colIdCuota.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getIdCuota()).asObject());
-        colNumCuota.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getNumeroCuota()).asObject());
-        colCantCuotas.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getCantidadCuotas()).asObject());
-        colVencimiento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getFechaVencimiento()));
-        colMonto.setCellValueFactory(cellData -> new javafx.beans.property.SimpleDoubleProperty(cellData.getValue().getMontoCuota()).asObject()); // <-- Uso de SimpleDoubleProperty
-        colDui.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDui()));
-        colNit.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNit()));
-        colEstado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEstadoCalculado()));
+        colFactura.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getNumeroFactura()).asObject());
+        colIdCuota.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdCuota()).asObject());
+        colNumCuota.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getNumeroCuota()).asObject());
+        colCantCuotas.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getCantidadCuotas()).asObject());
+        colVencimiento.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getFechaVencimiento()));
+        colMonto.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getMontoCuota()).asObject());
+        colDui.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDui()));
+        colNit.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNit()));
+        colEstado.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEstadoCalculado()));
 
         tblCuotas.setItems(listaCuotas);
     }
@@ -78,44 +84,22 @@ public class CreditosController {
     private void handleBuscar() {
         listaCuotas.clear();
 
-        Integer idCliente = txtClienteId.getText().trim().isEmpty() ? null : Integer.parseInt(txtClienteId.getText().trim());
-        Integer numFactura = txtNumeroFactura.getText().trim().isEmpty() ? null : Integer.parseInt(txtNumeroFactura.getText().trim());
-        String dui = txtDui.getText().trim();
-        String nit = txtNit.getText().trim();
-        String estado = cmbEstado.getValue();
-
-        String sql = "{CALL sp_listar_cuotas(?, ?, ?, ?, ?, ?)}";
-
-        try (Connection conn = Conexion.getConexion();
-             CallableStatement stmt = conn.prepareCall(sql)) {
-
-            stmt.setInt(1, idUsuarioLogueado);
-            stmt.setObject(2, idCliente, Types.INTEGER);
-            stmt.setObject(3, numFactura, Types.INTEGER);
-            stmt.setString(4, dui.isEmpty() ? null : dui);
-            stmt.setString(5, nit.isEmpty() ? null : nit);
-            stmt.setString(6, "Todos".equals(estado) ? null : estado);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                listaCuotas.add(new Cuota(
-                        rs.getInt("NUMERO_FACTURA"),
-                        rs.getInt("ID_CUOTA"),
-                        rs.getInt("NUMERO_CUOTA"),
-                        rs.getInt("CANTIDAD_CUOTAS"),
-                        rs.getDate("FECHA_VENCIMIENTO"),
-                        rs.getDouble("MONTO_CUOTA"),
-                        rs.getString("DUI"),
-                        rs.getString("NIT"),
-                        rs.getString("ESTADO_CALCULADO")
-                ));
-            }
+        try {
+            listaCuotas.addAll(cuotaDAO.listar(
+                    idUsuarioLogueado,
+                    txtClienteId.getText(),
+                    txtNumeroFactura.getText(),
+                    txtDui.getText(),
+                    txtNit.getText(),
+                    cmbEstado.getValue()
+            ));
 
             if (listaCuotas.isEmpty()) {
                 Alertas.advertencia("Búsqueda", "No se encontraron cuotas con los criterios ingresados.");
             }
 
+        } catch (IllegalArgumentException e) {
+            Alertas.advertencia("Datos inválidos", e.getMessage());
         } catch (SQLException e) {
             Alertas.advertencia("Error al consultar cuotas", e.getMessage());
         }
@@ -123,26 +107,20 @@ public class CreditosController {
 
     @FXML
     private void handlePagar() {
-        Cuota cuotaSeleccionada = tblCuotas.getSelectionModel().getSelectedItem();
-        if (cuotaSeleccionada == null) return;
+        Cuota cuota = tblCuotas.getSelectionModel().getSelectedItem();
+        if (cuota == null) return;
 
         int idMetodoPago = cmbMetodoPago.getSelectionModel().getSelectedIndex() + 1;
 
-        String sql = "{CALL sp_pagar_cuota(?, ?, ?)}";
+        try {
+            cuotaDAO.pagar(idUsuarioLogueado, cuota, idMetodoPago);
 
-        try (Connection conn = Conexion.getConexion();
-             CallableStatement stmt = conn.prepareCall(sql)) {
-
-            stmt.setInt(1, idUsuarioLogueado);
-            stmt.setInt(2, cuotaSeleccionada.getIdCuota());
-            stmt.setInt(3, idMetodoPago);
-
-            stmt.executeUpdate();
-
-            Alertas.advertencia("Pago Exitoso", "La cuota N° " + cuotaSeleccionada.getNumeroCuota() + " fue pagada correctamente.");
-
+            Alertas.advertencia("Pago Exitoso",
+                    "La cuota N° " + cuota.getNumeroCuota() + " fue pagada correctamente.");
             handleBuscar();
 
+        } catch (IllegalArgumentException e) {
+            Alertas.advertencia("Datos inválidos", e.getMessage());
         } catch (SQLException e) {
             Alertas.advertencia("Error en procesamiento de pago", e.getMessage());
         }

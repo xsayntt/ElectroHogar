@@ -18,7 +18,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="720.0" prefWidth="1240.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bad215.electrohogar.controller.GestionUsuariosController">
+<BorderPane prefHeight="720.0" prefWidth="1240.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+stylesheets="@style.css" fx:controller="com.bad215.electrohogar.controller.GestionUsuariosController">
 
     <!-- ===== Centro: búsqueda y tabla ===== -->
     <center>
@@ -31,7 +32,7 @@
 
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <TextField fx:id="txtBuscar" promptText="Buscar por usuario, rol, nombre, DUI o email" HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnBuscar" onAction="#onBuscar" text="Buscar" />
+                <Button fx:id="btnBuscar" onAction="#onBuscar" text="Buscar"  styleClass="btn-buscar"/>
             </HBox>
 
             <TableView fx:id="tblUsuarios" VBox.vgrow="ALWAYS">
@@ -194,7 +195,7 @@
                 <padding>
                     <Insets bottom="12.0" left="20.0" right="20.0" top="12.0" />
                 </padding>
-                <Button onAction="#guardarUsuario" text="Guardar usuario" />
+                <Button onAction="#guardarUsuario" text="Guardar usuario" styleClass="btn-guardar"/>
             </HBox>
         </VBox>
     </right>

@@ -17,8 +17,8 @@
          </padding>
          <children>
             <!-- Título y subtítulo -->
-            <Label styleClass="login-title" text="ElectroHogar" />
-            <Label styleClass="login-subtitle" text="Acceso al Sistema Corporativo" />
+            <Label styleClass="titulo-pantalla" text="ElectroHogar" />
+            <Label styleClass="subtitulo-pantalla" text="Acceso al Sistema de Ventas" />
             
             <!-- Espaciador visual -->
             <VBox prefHeight="10.0" prefWidth="240.0" />
@@ -40,7 +40,7 @@
             </VBox>
 
             <!-- Botón de Inicio de Sesión -->
-            <Button fx:id="btnIngresar" mnemonicParsing="false" onAction="#onIngresar" prefHeight="32.0" prefWidth="240.0" styleClass="login-button" text="Iniciar Sesión" />
+            <Button fx:id="btnIngresar" mnemonicParsing="false" onAction="#onIngresar" prefHeight="32.0" prefWidth="240.0" styleClass="btn-buscar" text="Iniciar Sesión" />
          </children>
       </VBox>
    </children>

@@ -8,6 +8,7 @@ import com.bad215.electrohogar.model.ProductoVenta;
 import com.bad215.electrohogar.utils.Alertas;
 import com.bad215.electrohogar.utils.Formulario;
 import com.bad215.electrohogar.utils.Sesion;
+import java.io.IOException;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -21,13 +22,18 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  *
@@ -38,8 +44,8 @@ public class FacturasDetalleController implements Initializable {
     private static final int MAX_CUOTAS = 100;
     private static final String SIN_PRODUCTO = "Ningún producto seleccionado";
     
-    @FXML private TextField txtBuscarCliente;
-    @FXML private ComboBox<ClienteVenta> cmbCliente;
+    @FXML private TextField txtCliente;
+    @FXML private Button btnSeleccionarCliente;
     @FXML private ComboBox<MetodoPago> cmbMetodoPago;
     @FXML private TextField txtCuotas;
     @FXML private TextField txtSubtotal;
@@ -68,6 +74,7 @@ public class FacturasDetalleController implements Initializable {
     @FXML private Button btnCancelar;
     @FXML private Button btnProcederPago;
     
+    private ClienteVenta clienteSeleccionado;
     private final FacturaDao facturaDao = new FacturaDao();
     private final ObservableList<LineaVenta> lineas = FXCollections.observableArrayList();
     
@@ -81,7 +88,7 @@ public class FacturasDetalleController implements Initializable {
     }
     
     private void configurarTablaProductos() {
-        colProdId.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdProducto()));
+//        colProdId.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdProducto()));
         colProdNombre.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNombreProducto()));
         colProdCategoria.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNombreCategoria()));
         colProdPrecio.setCellValueFactory(c -> new SimpleStringProperty(formato(c.getValue().getPrecio())));
@@ -90,7 +97,7 @@ public class FacturasDetalleController implements Initializable {
     }
 
     private void configurarTablaAgregados() {
-        colAgId.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdProducto()));
+//        colAgId.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdProducto()));
         colAgNombre.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNombreProducto()));
         colAgCantidad.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getCantidad()));
         colAgPrecio.setCellValueFactory(c -> new SimpleStringProperty(formato(c.getValue().getPrecioUnitario())));
@@ -103,37 +110,41 @@ public class FacturasDetalleController implements Initializable {
                 lblProductoSeleccionado.setText(nuevo == null ? SIN_PRODUCTO : nuevo.getNombreProducto()));
         btnQuitarProducto.disableProperty().bind(tblAgregados.getSelectionModel().selectedItemProperty().isNull());
     }
-
+    
     private void cargarDatosIniciales() {
-        try {
-            int idUsuario = Sesion.getIdUsuario();
-            cmbMetodoPago.setItems(FXCollections.observableArrayList(facturaDao.listarMetodosPago(idUsuario)));
-            cmbCliente.setItems(FXCollections.observableArrayList(facturaDao.buscarClientesEnVenta(idUsuario, "")));
-            tblProductos.setItems(FXCollections.observableArrayList(facturaDao.buscarProductosEnVenta(idUsuario, "")));
-        } catch (SQLException e) {
-            mostrarError("Nueva factura", "No se pudieron cargar los datos de la pantalla.", e);
-        }
+    try {
+        int idUsuario = Sesion.getIdUsuario();
+        cmbMetodoPago.setItems(FXCollections.observableArrayList(facturaDao.listarMetodosPago(idUsuario)));
+        tblProductos.setItems(FXCollections.observableArrayList(facturaDao.buscarProductosEnVenta(idUsuario, "")));
+    } catch (SQLException e) {
+        mostrarError("Nueva factura", "No se pudieron cargar los datos de la pantalla.", e);
     }
-
+}
+    
     @FXML
-    private void buscarCliente() {
-        String texto = textoBusqueda(txtBuscarCliente);
-        if (texto == null) {
-            return;
+private void seleccionarCliente() {
+    try {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/bad215/electrohogar/SeleccionarCliente.fxml"));
+        Parent root = loader.load();
+
+        Stage dialogo = new Stage();
+        dialogo.setTitle("Seleccionar cliente");
+        dialogo.initModality(Modality.APPLICATION_MODAL);
+        dialogo.initOwner(btnSeleccionarCliente.getScene().getWindow());
+        dialogo.setScene(new Scene(root));
+        dialogo.showAndWait();
+
+        ClienteVenta elegido = ((SeleccionarClienteController) loader.getController()).getClienteElegido();
+        if (elegido != null) {
+            clienteSeleccionado = elegido;
+            txtCliente.setText(elegido.getNombreCliente());
         }
-        try {
-            List<ClienteVenta> clientes = facturaDao.buscarClientesEnVenta(Sesion.getIdUsuario(), texto);
-            cmbCliente.setItems(FXCollections.observableArrayList(clientes));
-            cmbCliente.getSelectionModel().clearSelection();
-            if (clientes.isEmpty()) {
-                Alertas.info("Clientes", "No se encontraron clientes con ese criterio.");
-            } else {
-                cmbCliente.show();
-            }
-        } catch (SQLException e) {
-            mostrarError("Clientes", "No se pudieron buscar los clientes.", e);
-        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        Alertas.error("Clientes", "No se pudo abrir el selector de clientes.");
     }
+}
 
     @FXML
     private void metodoPagoSeleccionado() {
@@ -213,7 +224,7 @@ public class FacturasDetalleController implements Initializable {
 
         @FXML
     private void procederPago() {
-        ClienteVenta cliente = cmbCliente.getValue();
+       ClienteVenta cliente = clienteSeleccionado;
         MetodoPago metodo = cmbMetodoPago.getValue();
         if (cliente == null || metodo == null) {
             Alertas.advertencia("Campos requeridos", "Selecciona el cliente y el método de pago.");

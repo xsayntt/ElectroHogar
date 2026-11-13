@@ -8,109 +8,54 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" prefHeight="760.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bad215.electrohogar.controller.FacturasDetalleController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="760.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bad215.electrohogar.controller.FacturasDetalleController">
     <content>
-        <VBox spacing="14.0" style="-fx-background-color: white;">
+        <VBox spacing="16.0" styleClass="factura-root">
             <padding>
                 <Insets bottom="24.0" left="28.0" right="28.0" top="20.0" />
             </padding>
 
-            <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Nueva factura" />
+            <Label styleClass="titulo-pantalla" text="Nueva factura" />
 
-            <HBox spacing="28.0">
+	<!-- ===== Datos de cabecera: mismas columnas que el cuerpo ===== -->
+<HBox spacing="28.0">
+    <!-- Izquierda: cliente -->
+    <VBox minWidth="520.0" prefWidth="680.0" spacing="4.0" HBox.hgrow="ALWAYS">
+        <Label text="Cliente" />
+        <HBox spacing="8.0">
+            <TextField fx:id="txtCliente" editable="false" prefHeight="32.0" promptText="Presiona el boton para seleccionar un cliente" HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnSeleccionarCliente" mnemonicParsing="false" onAction="#seleccionarCliente" prefHeight="32.0" prefWidth="110.0" text="Seleccionar" styleClass="btn-buscar" />
+        </HBox>
+    </VBox>
 
-                <!-- ===== Columna izquierda: datos de la factura y producto elegido ===== -->
-                <VBox minWidth="460.0" prefWidth="500.0" spacing="12.0">
-                    <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Datos generales de facturación" />
+<!-- Derecha: método de pago y cuotas -->
+    <HBox minWidth="400.0" prefWidth="460.0" spacing="18.0" HBox.hgrow="ALWAYS">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Método de pago" />
+            <ComboBox fx:id="cmbMetodoPago" maxWidth="Infinity" onAction="#metodoPagoSeleccionado" prefHeight="32.0" promptText="Selecciona un método" />
+        </VBox>
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Cantidad de cuotas" />
+            <TextField fx:id="txtCuotas" disable="true" maxWidth="Infinity" prefHeight="32.0" promptText="Solo si es crédito" />
+        </VBox>
+    </HBox>
+</HBox>
+            <!-- ===== Cuerpo: productos disponibles (izquierda) y agregados (derecha) ===== -->
+            <HBox spacing="28.0" VBox.vgrow="ALWAYS">
 
-                    <VBox style="-fx-background-color: #c9d0da;">
-                        <padding>
-                            <Insets bottom="20.0" left="20.0" right="20.0" top="18.0" />
-                        </padding>
-                        <GridPane hgap="18.0" vgap="12.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
-                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
-                            </columnConstraints>
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label style="-fx-font-size: 12px;" text="Buscar cliente" />
-                        <TextField fx:id="txtBuscarCliente" onAction="#buscarCliente" prefHeight="36.0" promptText="Nombre o ID" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
-                    </VBox>
-                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label style="-fx-font-size: 12px;" text="Cliente" />
-                        <ComboBox fx:id="cmbCliente" maxWidth="Infinity" prefHeight="36.0" promptText="Selecciona un cliente" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc;" />
-                    </VBox>
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label style="-fx-font-size: 12px;" text="Método de pago" />
-                        <ComboBox fx:id="cmbMetodoPago" maxWidth="Infinity" onAction="#metodoPagoSeleccionado" prefHeight="36.0" promptText="Selecciona un método" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc;" />
-                    </VBox>
-                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label style="-fx-font-size: 12px;" text="Cantidad de cuotas" />
-                        <TextField fx:id="txtCuotas" disable="true" prefHeight="36.0" promptText="Solo si es crédito" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
-                    </VBox>
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label style="-fx-font-size: 12px;" text="Subtotal" />
-                        <TextField fx:id="txtSubtotal" editable="false" prefHeight="36.0" promptText="0.00" style="-fx-background-color: #eef1f5; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
-                    </VBox>
-                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label style="-fx-font-size: 12px;" text="Total" />
-                        <TextField fx:id="txtTotal" editable="false" prefHeight="36.0" promptText="0.00" style="-fx-background-color: #eef1f5; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
-                    </VBox>
-                     <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                     </rowConstraints>
-                        </GridPane>
-                    </VBox>
-
-                    <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Elegir la cantidad a registrar en factura">
-                        <padding>
-                            <Insets top="8.0" />
-                        </padding>
-                    </Label>
-                    <Label fx:id="lblProductoSeleccionado" style="-fx-font-size: 13px;" text="Ningún producto seleccionado" />
-
-                    <VBox style="-fx-background-color: #c9d0da;">
-                        <padding>
-                            <Insets bottom="20.0" left="20.0" right="20.0" top="18.0" />
-                        </padding>
-                        <GridPane hgap="18.0" vgap="12.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
-                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
-                            </columnConstraints>
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
-                        <Label style="-fx-font-size: 12px;" text="Cantidad" />
-                        <TextField fx:id="txtCantidad" prefHeight="36.0" promptText="1" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #dcdcdc; -fx-padding: 0 14 0 14;" />
-                    </VBox>
-                     <rowConstraints>
-                        <RowConstraints />
-                     </rowConstraints>
-                        </GridPane>
-                    </VBox>
-
-                    <HBox alignment="CENTER">
-                        <Button fx:id="btnAgregarProducto" mnemonicParsing="false" onAction="#agregarProducto" prefHeight="38.0" prefWidth="240.0" style="-fx-background-color: white; -fx-text-fill: #3a4fc4; -fx-font-weight: bold; -fx-border-color: #3a4fc4; -fx-background-radius: 20; -fx-border-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" text="Agregar producto" />
-                    </HBox>
-                </VBox>
-
-                <!-- ===== Columna derecha: productos disponibles y productos agregados ===== -->
-                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Productos disponibles" />
+                <!-- Izquierda: productos disponibles, selección y cantidad -->
+                <VBox minWidth="520.0" prefWidth="680.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <Label styleClass="titulo-seccion" text="Productos disponibles" />
                     <HBox alignment="CENTER_LEFT" spacing="12.0">
-                        <TextField fx:id="txtBuscarProducto" onAction="#buscarProducto" prefHeight="36.0" promptText="Nombre, descripción o categoría" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #c9d0da; -fx-padding: 0 14 0 14;" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnBuscarProducto" mnemonicParsing="false" onAction="#buscarProducto" prefHeight="36.0" prefWidth="110.0" style="-fx-background-color: #4f6bff; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" text="Buscar" />
+                        <TextField fx:id="txtBuscarProducto" onAction="#buscarProducto" prefHeight="36.0" promptText="Nombre, descripción o categoría" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnBuscarProducto" mnemonicParsing="false" onAction="#buscarProducto" prefHeight="36.0" prefWidth="110.0" text="Buscar" styleClass="btn-buscar" />
                     </HBox>
-                    <TableView fx:id="tblProductos" prefHeight="260.0">
+                    <TableView fx:id="tblProductos" prefHeight="300.0" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colProdId" minWidth="40" prefWidth="50" text="ID" />
+                           
                             <TableColumn fx:id="colProdNombre" minWidth="120" prefWidth="170" text="Producto" />
                             <TableColumn fx:id="colProdCategoria" minWidth="90" prefWidth="110" text="Categoría" />
                             <TableColumn fx:id="colProdPrecio" minWidth="70" prefWidth="80" text="Precio" />
@@ -125,12 +70,19 @@
                         </placeholder>
                     </TableView>
 
-                    <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Productos agregados">
-                        <padding>
-                            <Insets top="8.0" />
-                        </padding>
-                    </Label>
-                    <TableView fx:id="tblAgregados" prefHeight="200.0">
+                    <Label fx:id="lblProductoSeleccionado" text="Ningún producto seleccionado" />
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <Label text="Cantidad" />
+                        <TextField fx:id="txtCantidad" prefHeight="36.0" prefWidth="90.0" promptText="1" />
+                        <Button fx:id="btnAgregarProducto" mnemonicParsing="false" onAction="#agregarProducto" prefHeight="38.0" prefWidth="200.0" text="Agregar producto"
+styleClass="btn-buscar" />
+                    </HBox>
+                </VBox>
+
+                <!-- Derecha: productos agregados y totales -->
+                <VBox minWidth="400.0" prefWidth="460.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <Label styleClass="titulo-seccion" text="Productos agregados" />
+                    <TableView fx:id="tblAgregados" prefHeight="300.0" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colAgId" minWidth="40" prefWidth="50" text="ID" />
                             <TableColumn fx:id="colAgNombre" minWidth="120" prefWidth="190" text="Producto" />
@@ -145,19 +97,28 @@
                             <Label text="Aún no se han agregado productos." />
                         </placeholder>
                     </TableView>
+
                     <HBox alignment="CENTER_RIGHT">
-                        <Button fx:id="btnQuitarProducto" disable="true" mnemonicParsing="false" onAction="#quitarProducto" prefHeight="34.0" prefWidth="170.0" style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" text="Quitar producto" />
+                        <Button fx:id="btnQuitarProducto" disable="true" mnemonicParsing="false" onAction="#quitarProducto" prefHeight="34.0" prefWidth="170.0" text="Quitar producto" styleClass="btn-peligro"/>
                     </HBox>
+
+                    <VBox alignment="CENTER_RIGHT" spacing="8.0">
+                        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                            <Label text="Subtotal" />
+                            <TextField fx:id="txtSubtotal" editable="false" prefHeight="36.0" prefWidth="160.0" promptText="0.00" />
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                            <Label text="Total" />
+                            <TextField fx:id="txtTotal" editable="false" prefHeight="36.0" prefWidth="160.0" promptText="0.00" />
+                        </HBox>
+                    </VBox>
                 </VBox>
             </HBox>
 
             <!-- ===== Acciones de la factura ===== -->
             <HBox alignment="CENTER_RIGHT" spacing="14.0">
-                <padding>
-                    <Insets top="6.0" />
-                </padding>
-                <Button fx:id="btnCancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelar" prefHeight="38.0" prefWidth="170.0" style="-fx-background-color: #dcdcdc; -fx-text-fill: #555555; -fx-background-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" text="Cancelar" />
-                <Button fx:id="btnProcederPago" defaultButton="true" mnemonicParsing="false" onAction="#procederPago" prefHeight="38.0" prefWidth="190.0" style="-fx-background-color: #4f6bff; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" text="Proceder a pago" />
+                <Button fx:id="btnCancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelar" prefHeight="38.0" prefWidth="170.0" text="Cancelar" styleClass="btn-cancelar"/>
+                <Button fx:id="btnProcederPago" defaultButton="true" mnemonicParsing="false" onAction="#procederPago" prefHeight="38.0" prefWidth="190.0" text="Proceder a pago" styleClass="btn-guardar"/>
             </HBox>
         </VBox>
     </content>

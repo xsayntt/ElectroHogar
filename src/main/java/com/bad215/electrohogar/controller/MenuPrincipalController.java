@@ -104,7 +104,7 @@ public class MenuPrincipalController implements Initializable {
 
     private Button crearBoton(MenuRuta opcion) {
         Button btn = new Button(opcion.getNombreOpcion());
-        btn.getStyleClass().add("menu-button");
+        btn.getStyleClass().add("menu-btn");
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.setOnAction(e -> abrirVista(opcion));
         return btn;

@@ -11,36 +11,27 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" prefHeight="640.0" prefWidth="980.0"
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="640.0" prefWidth="980.0"
             xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.bad215.electrohogar.controller.FacturasController">
     <content>
-        <VBox spacing="14.0" style="-fx-background-color: white;">
+        <VBox spacing="16.0" styleClass="pantalla-root">
             <padding>
                 <Insets bottom="24.0" left="28.0" right="28.0" top="20.0" />
             </padding>
 
-            <Label text="Facturas" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
-
-            <!-- Fecha y datos del usuario activo -->
-            <VBox spacing="2.0">
-                <Label fx:id="lblFechaActual" text="Fecha: " style="-fx-font-size: 13px;" />
-                <Label fx:id="lblUsuarioActivo" text="Usuario: " style="-fx-font-size: 13px;" />
-            </VBox>
-
-            <!-- Buscador (sp_listar_facturas) y botón para crear factura -->
+            <!-- Encabezado: título a la izquierda, acción principal a la derecha -->
             <HBox alignment="CENTER_LEFT" spacing="12.0">
-                <TextField fx:id="txtBuscarFactura" prefHeight="36.0" prefWidth="420.0"
-                           promptText="Buscar por N° de factura, cliente o empleado"
-                           onAction="#buscarFacturas"
-                           style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #c9d0da; -fx-padding: 0 14 0 14;" />
-                <Button fx:id="btnBuscarFactura" mnemonicParsing="false" onAction="#buscarFacturas"
-                        prefHeight="36.0" prefWidth="110.0" text="Buscar"
-                        style="-fx-background-color: #4f6bff; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" />
+                <Label styleClass="titulo-pantalla" text="Facturas" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnCrearFactura" mnemonicParsing="false" onAction="#crearFactura"
-                        prefHeight="36.0" prefWidth="170.0" text="Crear factura"
-                        style="-fx-background-color: #3a4fc4; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 13px; -fx-cursor: hand;" />
+                <Button fx:id="btnCrearFactura" mnemonicParsing="false" onAction="#crearFactura" prefHeight="32.0" prefWidth="140.0" text="Crear factura" styleClass="btn-guardar" />
+            </HBox>
+
+
+            <!-- Buscador (sp_listar_facturas) -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+                <TextField fx:id="txtBuscarFactura" onAction="#buscarFacturas" prefHeight="32.0" prefWidth="420.0" promptText="Buscar por N° de factura, cliente o empleado"  />
+                <Button fx:id="btnBuscarFactura" mnemonicParsing="false" onAction="#buscarFacturas" prefHeight="32.0" prefWidth="80.0" text="Buscar" styleClass="btn-buscar"/>
             </HBox>
 
             <!-- Tabla con los datos de sp_listar_facturas -->

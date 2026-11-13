@@ -55,7 +55,6 @@ public class FacturasController implements Initializable {
     private final FacturaDao facturaDao = new FacturaDao();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mostrarDatosSesion();
         configurarColumnas();
         cargarFacturas("");
     }

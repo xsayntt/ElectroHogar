@@ -10,7 +10,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.bad215.electrohogar.controller.MenuPrincipalController"
-            stylesheets="@styles.css" prefWidth="1100" prefHeight="700">
+            stylesheets="@style.css" styleClass="root pantalla-root barra-lateral" prefWidth="1100" prefHeight="700">
     <left>
         <ScrollPane fitToWidth="true" prefWidth="240" hbarPolicy="NEVER">
             <VBox fx:id="menuContainer" spacing="6">

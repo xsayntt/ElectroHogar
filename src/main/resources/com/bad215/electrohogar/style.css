@@ -1,57 +1,410 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : 3 nov 2026, 6:49:13 p.m.
-    Author     : Carlos
-*/
+/* ==========================================================================
+   ElectroHogar - estilos.css
+   Tema claro, barra lateral rojo pastel, bordes casi rectos (3-4 px).
+   Los colores se definen una sola vez en .root y se reutilizan abajo.
+   ========================================================================== */
 
-.root-pane {
-    -fx-background-color: #f4f6f9;
+.root {
+    /* --- Paleta --- */
+    -color-fondo: #f6f7f9;
+    -color-superficie: #ffffff;
+    -color-borde: #d5dae1;
+    -color-texto: #26323f;
+    -color-texto-suave: #6b7280;
+
+    -color-verde: #2e9e5b;          /* guardar / confirmar */
+    -color-rojo: #d64545;           /* cancelar / quitar */
+    -color-celeste: #8fd3f4;        /* buscar / aplicar filtros */
+    -color-celeste-texto: #0b3a57;
+    -color-primario: #4a5fa8;       /* acciones principales (crear, agregar) */
+    -color-ambar: #f0a43c;          /* exportar */
+    -color-ambar-texto: #3b2300;
+
+    -color-lateral: #f4c9c5;        /* barra lateral rojo pastel */
+    -color-lateral-texto: #5b2b28;
+
+    /* --- Colores base de JavaFX (Modena) redefinidos --- */
+    -fx-accent: -color-primario;
+    -fx-focus-color: -color-primario;
+    -fx-faint-focus-color: transparent;
+    -fx-selection-bar: #dce9f9;
+    -fx-selection-bar-non-focused: #e8eff9;
+    -fx-selection-bar-text: -color-texto;
+
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
 }
 
-.login-card {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+/* ==========================================================================
+   Pantallas y contenedores
+   ========================================================================== */
+
+.pantalla-root,
+.factura-root {
+    -fx-background-color: -color-fondo;
 }
 
-.login-title {
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
+.scroll-pane {
+    -fx-background-color: -color-fondo;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
 }
 
-.login-subtitle {
-    -fx-font-size: 11px;
-    -fx-text-fill: #7f8c8d;
+.scroll-pane > .viewport {
+    -fx-background-color: -color-fondo;
 }
 
-.input-label {
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #34495e;
-}
-
-.text-field, .password-field {
+/* Tarjeta: el padding lo define cada FXML para no romper la alineacion */
+.seccion {
+    -fx-background-color: -color-superficie;
     -fx-background-radius: 4;
-    -fx-border-color: #dcdde1;
+    -fx-border-color: -color-borde;
     -fx-border-radius: 4;
 }
 
-.login-button {
-    -fx-background-color: #2980b9;
+.separator .line {
+    -fx-border-color: -color-borde;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ==========================================================================
+   Texto
+   ========================================================================== */
+
+.label {
+    -fx-text-fill: -color-texto;
+}
+
+.titulo-pantalla {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.subtitulo-pantalla {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-texto-suave;
+}
+
+.titulo-seccion {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.texto-secundario {
+    -fx-font-size: 12px;
+    -fx-text-fill: -color-texto-suave;
+}
+
+/* ==========================================================================
+   Campos de entrada
+   ========================================================================== */
+
+.text-field {
+    -fx-background-color: -color-superficie;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-border-color: -color-borde;
+    -fx-border-radius: 3;
+    -fx-padding: 6 10;
+    -fx-text-fill: -color-texto;
+    -fx-prompt-text-fill: #9aa3af;
+}
+
+.text-field:focused {
+    -fx-border-color: -color-primario;
+}
+
+/* Campos de solo lectura (subtotal, total, cliente elegido) */
+.text-field:readonly {
+    -fx-background-color: #eef0f3;
+}
+
+.text-field:disabled {
+    -fx-background-color: #eef0f3;
+    -fx-opacity: 0.7;
+}
+
+/* ComboBox y DatePicker */
+.combo-box-base {
+    -fx-background-color: -color-superficie;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-border-color: -color-borde;
+    -fx-border-radius: 3;
+}
+
+.combo-box-base:focused {
+    -fx-border-color: -color-primario;
+}
+
+.combo-box-base:disabled {
+    -fx-opacity: 0.6;
+}
+
+.combo-box-base > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.combo-box-base > .arrow-button > .arrow {
+    -fx-background-color: -color-texto-suave;
+}
+
+.combo-box-base > .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 6 10;
+    -fx-text-fill: -color-texto;
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup > .list-view {
+    -fx-background-color: -color-superficie;
+    -fx-border-color: -color-borde;
+    -fx-background-insets: 0;
+}
+
+.combo-box-popup .list-cell:filled:hover {
+    -fx-background-color: #eef0f3;
+}
+
+.combo-box-popup .list-cell:filled:selected,
+.combo-box-popup .list-cell:filled:selected:hover {
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -color-texto;
+}
+
+/* ==========================================================================
+   Botones
+   Base neutra + una clase de color por tipo de accion.
+   ========================================================================== */
+
+.button {
+    -fx-background-color: #e9ecf0;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-padding: 6 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-texto;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #dde2e8;
+}
+
+.button:pressed {
+    -fx-background-color: #cfd5dc;
+}
+
+.button:focused {
+    -fx-border-color: -color-primario;
+}
+
+.button:disabled {
+    -fx-opacity: 0.45;
+}
+
+/* Guardar / confirmar: Proceder a pago, Pagar cuota */
+.btn-guardar {
+    -fx-background-color: -color-verde;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 4;
+}
+.btn-guardar:hover   { -fx-background-color: derive(-color-verde, -12%); }
+.btn-guardar:pressed { -fx-background-color: derive(-color-verde, -22%); }
+
+/* Cancelar: Cancelar factura, Cancelar en dialogos */
+.btn-cancelar {
+    -fx-background-color: -color-rojo;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.btn-cancelar:hover   { -fx-background-color: derive(-color-rojo, -12%); }
+.btn-cancelar:pressed { -fx-background-color: derive(-color-rojo, -22%); }
+
+/* Peligro suave (contorno rojo): Quitar producto */
+.btn-peligro {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-rojo;
+    -fx-text-fill: -color-rojo;
+}
+.btn-peligro:hover   { -fx-background-color: #fbeaea; }
+.btn-peligro:pressed { -fx-background-color: #f5d3d3; }
+
+/* Buscar y aplicar filtros */
+.btn-buscar {
+    -fx-background-color: -color-celeste;
+    -fx-text-fill: -color-celeste-texto;
+    -fx-font-weight: bold;
+}
+.btn-buscar:hover   { -fx-background-color: derive(-color-celeste, -10%); }
+.btn-buscar:pressed { -fx-background-color: derive(-color-celeste, -20%); }
+
+/* Accion principal: Crear factura, Agregar producto, Seleccionar (dialogo) */
+.btn-primario {
+    -fx-background-color: -color-primario;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.btn-primario:hover   { -fx-background-color: derive(-color-primario, -12%); }
+.btn-primario:pressed { -fx-background-color: derive(-color-primario, -22%); }
+
+/* Exportar PDF */
+.btn-exportar {
+    -fx-background-color: -color-ambar;
+    -fx-text-fill: -color-ambar-texto;
+    -fx-font-weight: bold;
+}
+.btn-exportar:hover   { -fx-background-color: derive(-color-ambar, -10%); }
+.btn-exportar:pressed { -fx-background-color: derive(-color-ambar, -20%); }
+
+/* Secundario (neutro, con borde): Limpiar, Vista previa, Seleccionar cliente */
+.btn-secundario {
+    -fx-background-color: -color-superficie;
+    -fx-border-color: -color-borde;
+}
+.btn-secundario:hover   { -fx-background-color: #eef0f3; }
+.btn-secundario:pressed { -fx-background-color: #dde2e8; }
+
+/* ==========================================================================
+   Tablas
+   ========================================================================== */
+
+.table-view {
+    -fx-background-color: -color-superficie;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-border-color: -color-borde;
+    -fx-border-radius: 3;
+    -fx-padding: 1;
 }
 
-.login-button:hover {
-    -fx-background-color: #2471a3;
+.table-view .column-header-background {
+    -fx-background-color: #eef0f3;
 }
 
-.forgot-link {
-    -fx-font-size: 11px;
-    -fx-text-fill: #7f8c8d;
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -color-borde transparent;
+    -fx-size: 34px;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-texto;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-row-cell {
+    -fx-background-color: -color-superficie;
+    -fx-table-cell-border-color: transparent;
+    -fx-cell-size: 32px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f8f9fb;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #eef3fa;
+}
+
+.table-row-cell:selected,
+.table-row-cell:selected:odd {
+    -fx-background-color: -fx-selection-bar;
+}
+
+.table-cell {
+    -fx-padding: 0 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-text-fill: -color-texto;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: -color-texto;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: -color-texto-suave;
+    -fx-font-size: 14px;
+}
+
+/* ==========================================================================
+   Barra lateral (rojo pastel)
+   Clases para el menu principal: barra-lateral, menu-titulo,
+   menu-btn y menu-btn-activo (la opcion de la pantalla actual).
+   ========================================================================== */
+
+.barra-lateral {
+    -fx-background-color: -color-lateral;
+}
+
+.barra-lateral .label,
+.menu-titulo {
+    -fx-text-fill: -color-lateral-texto;
+}
+
+.menu-titulo {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-lateral-texto;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 10 16;
+    -fx-background-radius: 0;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+}
+
+.menu-btn:hover {
+    -fx-background-color: derive(-color-lateral, -8%);
+}
+
+.menu-btn:pressed {
+    -fx-background-color: derive(-color-lateral, -14%);
+}
+
+.menu-btn-activo,
+.menu-btn-activo:hover {
+    -fx-background-color: derive(-color-lateral, -14%);
+    -fx-border-color: transparent transparent transparent #b5413b;
+    -fx-font-weight: bold;
+}
+
+/* Fondo de toda la ventana */
+.barra-lateral {
+    -fx-background-color: -color-lateral;
+}
+
+/* Menú lateral */
+.barra-lateral .scroll-pane {
+    -fx-background-color: -color-lateral;
+    -fx-background-insets: 0;
+}
+
+.barra-lateral .scroll-pane > .viewport {
+    -fx-background-color: -color-lateral;
+}
+
+/* Contenido central */
+.barra-lateral .stack-pane {
+    -fx-background-color: -color-lateral;
+}
+
+/* Barra superior */
+.barra-lateral .barra-superior {
+    -fx-background-color: -color-lateral;
 }
